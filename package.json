@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jomethedope/weather-app-node-lecture#readme",
   "dependencies": {
-    "request": "^2.88.0"
+    "request": "^2.75.0",
+    "yargs": "^12.0.5"
   }
 }

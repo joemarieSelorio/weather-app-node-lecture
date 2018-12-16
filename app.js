@@ -1,8 +1,34 @@
+const yargs   = require('yargs');
 const request = require('request');
+const geocode = require('./geocode/geocode');
+const weather = require('./weather/weather');
 
-request({
-    url: 'https://maps.googleapis.com/maps/api/geocode/json?address=4%20real%20street%20manuyo%201%20las%20pinas&key=AIzaSyBQLjAvOYfn5Tjta6DqnDocKnGPr5-pO1U',
-    json : true
-}, (error, response, body)=>{
-    console.log(body);
+const argv = yargs
+            .options({
+                a: {
+                    demand: true,
+                    alias: 'address',
+                    describe: 'Address to fetch weather for',
+                    string: true
+                }
+             })
+             .help()
+             .alias('help', 'h')
+             .argv;
+
+
+geocode.geocodeAddress(argv.address, (errMessage, result)=>{
+ if(errMessage){
+     console.log(errMessage);
+ }else{
+     weather.getWeather(result.latitude, result.longtitude, (err, weatherResult)=>{
+        if(err){
+            console.log(err);
+        }else{
+            console.log(JSON.stringify(weatherResult, undefined, 2));
+        }
+     });
+    }
 });
+
+
